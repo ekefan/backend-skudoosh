@@ -1,7 +1,6 @@
-# project.toml
-[ _ ]
-schema-version = "0.2
+[_]
+schema-version = "0.2"
 
-[[ io.buildpacks.build.env ]]
-  name="BP_GO_VERSION"
-  value="1.16"
+[[io.buildpacks.build.env]]
+name = "BP_GO_VERSION"
+value = "1.16"
