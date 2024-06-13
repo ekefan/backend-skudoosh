@@ -1,56 +1,81 @@
 package main
 
 import (
-    "fmt"
-    "net/http"
+	"database/sql"
 	"encoding/json"
-    "os"
+	"log"
+	"net/http"
+
+	_ "github.com/mattn/go-sqlite3"
 )
 
 type Message struct {
-    Text string `json:"message"`
+	Text string `json:"message"`
 }
 
 func helloHandler(w http.ResponseWriter, r *http.Request) {
-    // Create a Message struct instance
-    message := Message{
-        Text: "Hello, World!",
-    }
+	// Open and connect to the SQLite database
+	db, err := sql.Open("sqlite3", "./example.db")
+	if err != nil {
+		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
+		log.Fatal(err)
+		return
+	}
+	defer db.Close()
 
-    // Marshal the Message struct to JSON
-    jsonData, err := json.Marshal(message)
-    if err != nil {
-        http.Error(w, "Internal Server Error", http.StatusInternalServerError)
-        return
-    }
+	// Create table if not exists
+	_, err = db.Exec("CREATE TABLE IF NOT EXISTS messages (id INTEGER PRIMARY KEY AUTOINCREMENT, text TEXT)")
+	if err != nil {
+		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
+		log.Fatal(err)
+		return
+	}
 
-    // Set Content-Type header to application/json
-    w.Header().Set("Content-Type", "application/json")
+	// Insert a message into the database
+	_, err = db.Exec("INSERT INTO messages (text) VALUES (?)", "Hello, Database!")
+	if err != nil {
+		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
+		log.Fatal(err)
+		return
+	}
 
-    // Write the JSON response
-    _, err = w.Write(jsonData)
-    if err != nil {
-        http.Error(w, "Internal Server Error", http.StatusInternalServerError)
-        return
-    }
+	// Query the message from the database
+	var text string
+	row := db.QueryRow("SELECT text FROM messages WHERE id = ?", 1)
+	err = row.Scan(&text)
+	if err != nil {
+		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
+		log.Fatal(err)
+		return
+	}
+
+	// Create a Message struct instance
+	message := Message{
+		Text: text,
+	}
+
+	// Marshal the Message struct to JSON
+	jsonData, err := json.Marshal(message)
+	if err != nil {
+		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
+		log.Fatal(err)
+		return
+	}
+
+	// Set Content-Type header to application/json
+	w.Header().Set("Content-Type", "application/json")
+
+	// Write the JSON response
+	_, err = w.Write(jsonData)
+	if err != nil {
+		http.Error(w, "Internal Server Error", http.StatusInternalServerError)
+		log.Fatal(err)
+		return
+	}
 }
 
 func main() {
-    // Retrieve port from environment variable, defaulting to 8080 if not set
-    port := os.Getenv("PORT")
-    if port == "" {
-        port = "8080"
-    }
-
-    // Start server with specified host and port
-    host := os.Getenv("HOST")
-    if host == "" {
-        host = "0.0.0.0"
-    }
-
-    http.HandleFunc("/", helloHandler)
-    fmt.Printf("Starting server on %s:%s\n", host, port)
-    if err := http.ListenAndServe(host+":"+port, nil); err != nil {
-        fmt.Println("Error starting server:", err)
-    }
+	http.HandleFunc("/", helloHandler)
+	log.Println("Starting server on :8080")
+	http.ListenAndServe(":8080", nil)
 }
