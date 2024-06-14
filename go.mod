@@ -1,6 +1,6 @@
 module github.com/ekefan/testBuildDeploy
 
-go 1.18
+go 1.22.4
 
 require (
 	github.com/gin-gonic/gin v1.10.0
