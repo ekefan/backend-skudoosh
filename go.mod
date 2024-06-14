@@ -1,6 +1,6 @@
 module github.com/ekefan/testBuildDeploy
 
-go 1.22.4
+go 1.18
 
 require (
 	github.com/bytedance/sonic v1.11.6 // indirect
