@@ -1,4 +1,4 @@
-module github/ekefan/testBuildDeploy
+module github.com/ekefan/testBuildDeploy/backend
 
 go 1.18
 
