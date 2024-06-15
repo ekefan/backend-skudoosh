@@ -9,7 +9,7 @@ import (
 	"strings"
 	"time"
 
-	db "github.com/ekefan/testBuildDeploy/internal/db/sqlc"
+	db "github.com/ekefan/backend-skudoosh/internal/db/sqlc"
 	"github.com/gin-gonic/gin"
 	"github.com/lib/pq"
 )
@@ -84,7 +84,7 @@ func (server *Server) createUser(ctx *gin.Context) {
 	}
 	user, err := server.store.CreateUser(ctx, args)
 	if err != nil {
-		fmt.Println("not possible")
+		// fmt.Println("not possible")
 			if pqErr, ok := err.(*pq.Error); ok {
 				fmt.Println(pqErr.Code.Name())
 				switch pqErr.Code.Name() {

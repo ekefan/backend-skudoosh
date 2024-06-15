@@ -2,7 +2,7 @@ package server
 
 import (
 
-	db "github.com/ekefan/testBuildDeploy/internal/db/sqlc"
+	db "github.com/ekefan/backend-skudoosh/internal/db/sqlc"
 	"github.com/gin-gonic/gin"
 )
 

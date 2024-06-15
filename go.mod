@@ -1,4 +1,4 @@
-module github.com/ekefan/testBuildDeploy
+module github.com/ekefan/backend-skudoosh
 
 go 1.18
 

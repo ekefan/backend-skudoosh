@@ -5,9 +5,9 @@ import (
 	"fmt"
 	"log"
 
-	db "github.com/ekefan/testBuildDeploy/internal/db/sqlc"
-	api "github.com/ekefan/testBuildDeploy/internal/server"
-	"github.com/ekefan/testBuildDeploy/internal/utils"
+	db "github.com/ekefan/backend-skudoosh/internal/db/sqlc"
+	api "github.com/ekefan/backend-skudoosh/internal/server"
+	"github.com/ekefan/backend-skudoosh/internal/utils"
 	_ "github.com/lib/pq"
 )
 
