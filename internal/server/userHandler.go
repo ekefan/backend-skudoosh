@@ -107,7 +107,7 @@ type loginUserRequest struct {
 }
 
 type loginUserResponse struct {
-	//AccessToken string `json:"access_token"`
+	AccessToken string `json:"access_token"`
 	User userResp `json:"user"`
 }
 
@@ -133,15 +133,13 @@ func (server *Server) loginUser(ctx *gin.Context) {
 		ctx.JSON(http.StatusUnauthorized, errorResponse(err))
 		return
 	}
-	/*
-		accessToken, err := server.tokenMaker.CreateToken(user.Username, server.config.AccessTokenDuration)
-		if err != nil {
-			ctx.JSON(http.StatusInternalServerError, errorResponse(err))
-			return
-		}
-	*/
+	accessToken, err := server.tokenMaker.CreateToken(user.ID, server.config.AccessTokenDuration)
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, errorResponse(err))
+		return
+	}
 	resp := loginUserResponse{
-		//	AccessToken: accessToken,
+		AccessToken: accessToken,
 		User: CustomUserResponse(user),
 	}
 	ctx.JSON(http.StatusOK, resp)

@@ -15,7 +15,7 @@ func main() {
 	fmt.Println("start")
 	
 	config, err :=  utils.LoadConfig(".")
-	fmt.Printf("printing it %s", config.ServerAddress)
+
 	if err != nil {
 		log.Fatal("cannot load config: ", err)
 	}
@@ -30,7 +30,7 @@ func main() {
 	if err != nil {
 		log.Fatal("cannot create server: ", err)
 	}
-	fmt.Println(config.ServerAddress)
+	// fmt.Println(config.ServerAddress)
 	err = server.Start(config.ServerAddress)
 	if err != nil {
 		log.Fatal("Cannot Start Server: ", err)
