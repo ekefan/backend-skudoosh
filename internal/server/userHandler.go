@@ -10,6 +10,7 @@ import (
 	"time"
 
 	db "github.com/ekefan/backend-skudoosh/internal/db/sqlc"
+	util "github.com/ekefan/backend-skudoosh/internal/utils"
 	"github.com/gin-gonic/gin"
 	"github.com/lib/pq"
 )
@@ -68,18 +69,17 @@ func (server *Server) createUser(ctx *gin.Context) {
 		return
 	}
 
-	//hashedPassword, err := utils.HashPassword(req.Password)
-	/*
-		if err != nil {
-		  ctx.JSON(http.StatusInternalServerError, errorResponse(err))
-		}
-	*/
+	hashedPassword, err := util.HashPassword(req.Password)
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, errorResponse(err))
+	}
+
 	fullname := strings.Join([]string{req.Firstname, req.Lastname}, " ")
 	args := db.CreateUserParams{
 		Fullname:       fullname,
 		Username:       req.Username,
 		Email:          req.Email,
-		HashedPassword: req.Password,
+		HashedPassword: hashedPassword,
 		PhoneNumber:    req.PhoneNumber,
 	}
 	user, err := server.store.CreateUser(ctx, args)
@@ -128,12 +128,12 @@ func (server *Server) loginUser(ctx *gin.Context) {
 	}
 
 	//check_password
+	err = util.CheckPassword(req.Password, user.HashedPassword)
+	if err != nil {
+		ctx.JSON(http.StatusUnauthorized, errorResponse(err))
+		return
+	}
 	/*
-		err = utils.CheckPassword(req.Password, user.HashedPassword)
-		if err != nil {
-			ctx.JSON(http.StatusUnauthorized, errorResponse(err))
-		}
-
 		accessToken, err := server.tokenMaker.CreateToken(user.Username, server.config.AccessTokenDuration)
 		if err != nil {
 			ctx.JSON(http.StatusInternalServerError, errorResponse(err))
