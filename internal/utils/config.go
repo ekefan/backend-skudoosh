@@ -12,6 +12,7 @@ type Config struct {
 	DBDriver            string        `mapstructure:"DB_DRIVER"`
 	DBSource            string        `mapstructure:"DB_SOURCE"`
 	ServerAddress       string        `mapstructure:"SERVER_ADDRESS"`
+	Wakanow             string        `mapstruct:"WAKANOW"`
 	TokenSymmetricKey   string        `mapstructure:"TOKEN_SYMMETRIC_KEY"`
 	AccessTokenDuration time.Duration `maptstructure:"ACCESS_TOKEN_DURATION"`
 }
