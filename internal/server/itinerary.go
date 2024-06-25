@@ -42,6 +42,8 @@ func (server *Server) createTrip(ctx *gin.Context) {
 		ctx.JSON(http.StatusInternalServerError, errorResponse(err))
 		return
 	}
+
+	
 	resp :=struct{
 		TakeOffDate time.Time `json:"take_off_date"`
 		ReturnDate time.Time `json:"return_date"`

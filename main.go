@@ -2,7 +2,7 @@ package main
 
 import (
 	"database/sql"
-	"fmt"
+	// "fmt"
 	"log"
 
 	db "github.com/ekefan/backend-skudoosh/internal/db/sqlc"
@@ -12,8 +12,7 @@ import (
 )
 
 func main() {
-	fmt.Println("start")
-	
+	// load environnent variables
 	config, err :=  utils.LoadConfig(".")
 
 	if err != nil {
