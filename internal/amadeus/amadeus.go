@@ -60,51 +60,51 @@ type AuthErrorResponse struct {
 
 
 
-// type CityAndAirPortSearchResponse struct {
-//     Meta MetaData `json:"meta"`
-//     Data []Data   `json:"data"`
-// }
+type CityAndAirPortSearchResponse struct {
+    Meta MetaData `json:"meta"`
+    Data []Data   `json:"data"`
+}
 
-// type MetaData struct {
-//     Count int    `json:"count"`
-//     Links Links  `json:"links"`
-// }
+type MetaData struct {
+    Count int    `json:"count"`
+    Links Links  `json:"links"`
+}
 
-// type Links struct {
-//     Self string `json:"self"`
-//     // Next string `json:"next"`
-//     // Last string `json:"last"`
-// }
+type Links struct {
+    Self string `json:"self"`
+    // Next string `json:"next"`
+    // Last string `json:"last"`
+}
 
-// type Data struct {
-//     Type          string     `json:"type"`
-//     SubType       string     `json:"subType"`
-//     Name          string     `json:"name"`
-//     DetailedName  string     `json:"detailedName"`
-//     ID            string     `json:"id"`
-//     Self          Self       `json:"self"`
-//     TimeZoneOffset string    `json:"timeZoneOffset"`
-//     IataCode      string     `json:"iataCode"`
-//     GeoCode       GeoCode    `json:"geoCode"`
-//     Address       Address    `json:"address"`
-// }
+type Data struct {
+    Type          string     `json:"type"`
+    SubType       string     `json:"subType"`
+    Name          string     `json:"name"`
+    DetailedName  string     `json:"detailedName"`
+    ID            string     `json:"id"`
+    Self          Self       `json:"self"`
+    TimeZoneOffset string    `json:"timeZoneOffset"`
+    IataCode      string     `json:"iataCode"`
+    GeoCode       GeoCode    `json:"geoCode"`
+    Address       Address    `json:"address"`
+}
 
-// type Self struct {
-//     Href    string    `json:"href"`
-//     Methods []Methods `json:"methods"`
-// }
+type Self struct {
+    Href    string    `json:"href"`
+    Methods []Methods `json:"methods"`
+}
 
-// type Methods struct {}
+type Methods struct {}
 
-// type GeoCode struct {
-//     Latitude  float64 `json:"latitude"`
-//     Longitude float64 `json:"longitude"`
-// }
+type GeoCode struct {
+    Latitude  float64 `json:"latitude"`
+    Longitude float64 `json:"longitude"`
+}
 
-// type Address struct {
-//     CityName     string `json:"cityName"`
-//     CityCode     string `json:"cityCode"`
-//     CountryName  string `json:"countryName"`
-//     CountryCode  string `json:"countryCode"`
-//     RegionCode   string `json:"regionCode"`
-// }
+type Address struct {
+    CityName     string `json:"cityName"`
+    CityCode     string `json:"cityCode"`
+    CountryName  string `json:"countryName"`
+    CountryCode  string `json:"countryCode"`
+    RegionCode   string `json:"regionCode"`
+}
