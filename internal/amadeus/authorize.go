@@ -13,22 +13,17 @@ import (
 
 // token returns the current access token. If none exists yet, or if the existing one has expired, it fetches a new one from the Amadeus authorization API. If fetching fails, token returns an error.
 func (c *Client) token() (string, error) {
-	t := <-c.accessToken
+	t := <-c.AccessToken
 	return t.Token, t.Err
 }
 
 // startTokenFetcher starts a goroutine that fetches a new access token from the Amadeus authorization API if there is none yet, or if the current one expires. It returns channels for returning the current token, or an error if the token could not be fetched.
-func (c *Client) refreshToken() {
+func (c *Client) refreshToken(config utils.Config) {
 	var token string
 	var expiration time.Duration
 	var err error
-
-	config, err := utils.LoadConfig("./../..")
-	if err != nil {
-		return
-	}
 	// Set the initial token, before any client can request it.
-	token, expiration, err = authorize(c.baseURL, config)
+	token, expiration, err = authorize(c.BaseURL, config)
 
 	// Set a new timer to fire when 90% of the expiration duration has passed.
 	// We want a new token *before* the current one expires.
@@ -38,11 +33,11 @@ func (c *Client) refreshToken() {
 		select {
 		// The expiration timer has fired and wrote the current time to `expired`.
 		case <-expired:
-			token, expiration, err = authorize(c.baseURL, config)
+			token, expiration, err = authorize(c.BaseURL, config)
 			// Set a new timer to fire when 90% of the expiration duration has passed.
 			expired = time.After(expiration * 90 / 100)
 
-		case c.accessToken <- tokenResponse{Token: token, Err: err}:
+		case c.AccessToken <- tokenResponse{Token: token, Err: err}:
 			// Someone has read the token, nothing to do.
 			// The next iteration will send the token to the channel again.
 		}

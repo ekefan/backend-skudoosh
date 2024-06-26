@@ -1,15 +1,15 @@
-package server 
+package server
 
 import (
 	// "database/sql"
+	"fmt"
 	"net/http"
 	"time"
 
-	"github.com/gin-gonic/gin"
-	"github.com/ekefan/backend-skudoosh/internal/token"
 	db "github.com/ekefan/backend-skudoosh/internal/db/sqlc"
-	
-
+	"github.com/ekefan/backend-skudoosh/internal/token"
+	"github.com/gin-gonic/gin"
+	"github.com/ekefan/backend-skudoosh/internal/amadeus"
 	// "fmt"
 	// "github.com/lib/pq"
 )
@@ -43,17 +43,24 @@ func (server *Server) createTrip(ctx *gin.Context) {
 		return
 	}
 
-	
+	// call the amadeus function with the server
+	body, err := server.amadeusClient(req.Destination)
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, errorResponse(err))
+		return
+	}
+
+	fmt.Println(body)
 	resp :=struct{
 		TakeOffDate time.Time `json:"take_off_date"`
 		ReturnDate time.Time `json:"return_date"`
 		Destination string `json:"destination"`
-		Wakanow string `json:"wakanow"`
+		Resp  amadeus.CityAndAirPortSearchResponse `json:"resp"`
 	}{
 		TakeOffDate: itinerary.TakeOffDate,
 		ReturnDate: itinerary.ReturnDate,
 		Destination: itinerary.Destination,
-		Wakanow: server.config.Wakanow,
+		Resp: body,
 	}
 	ctx.JSON(http.StatusOK, resp)
 }

@@ -14,8 +14,8 @@ type Config struct {
 	ServerAddress       string        `mapstructure:"SERVER_ADDRESS"`
 	Wakanow             string        `mapstruct:"WAKANOW"`
 	TokenSymmetricKey   string        `mapstructure:"TOKEN_SYMMETRIC_KEY"`
-	AccessTokenDuration time.Duration `maptstructure:"ACCESS_TOKEN_DURATION"`
-	AmadeusClientID     string        `maptstructure:"AMADEUS_CLIENT_ID"`
+	AccessTokenDuration time.Duration `mapstructure:"ACCESS_TOKEN_DURATION"`
+	AmadeusClientID     string        `mapstructure:"AMADEUS_CLIENT_ID"`
 	AmadeusClientSecret string        `mapstructure:"AMADEUS_CLIENT_SECRET"`
 }
 

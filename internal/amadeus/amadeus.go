@@ -1,5 +1,7 @@
 package amadeus
 
+import "github.com/ekefan/backend-skudoosh/internal/utils"
+
 // tokenResponse contains either a valid access token
 // or an error that occurred while fetching the token
 type tokenResponse struct {
@@ -12,17 +14,17 @@ type tokenResponse struct {
 // in the background while serving the currently valid
 // token to clients
 type Client struct {
-	baseURL     string
-	accessToken chan tokenResponse
+	BaseURL     string
+	AccessToken chan tokenResponse
 }
 
 // Create a new client and start the token refreshing goroutine.
-func New() *Client {
+func New(config utils.Config) *Client {
 	c := &Client{
-		baseURL:     "https://test.api.amadeus.com/v1",
-		accessToken: make(chan tokenResponse),
+		BaseURL:     "https://test.api.amadeus.com/v1",
+		AccessToken: make(chan tokenResponse),
 	}
-	go c.refreshToken()
+	go c.refreshToken(config)
 	return c
 }
 
@@ -53,4 +55,56 @@ type AuthErrorResponse struct {
 	ErrorDescription string `json:"error_description"`
 	Code             int    `json:"code"`
 	Title            string `json:"title"`
+}
+
+
+
+
+type CityAndAirPortSearchResponse struct {
+    Meta MetaData `json:"meta"`
+    Data []Data   `json:"data"`
+}
+
+type MetaData struct {
+    Count int    `json:"count"`
+    Links Links  `json:"links"`
+}
+
+type Links struct {
+    Self string `json:"self"`
+    // Next string `json:"next"`
+    // Last string `json:"last"`
+}
+
+type Data struct {
+    Type          string     `json:"type"`
+    SubType       string     `json:"subType"`
+    Name          string     `json:"name"`
+    DetailedName  string     `json:"detailedName"`
+    ID            string     `json:"id"`
+    Self          Self       `json:"self"`
+    TimeZoneOffset string    `json:"timeZoneOffset"`
+    IataCode      string     `json:"iataCode"`
+    GeoCode       GeoCode    `json:"geoCode"`
+    Address       Address    `json:"address"`
+}
+
+type Self struct {
+    Href    string    `json:"href"`
+    Methods []Methods `json:"methods"`
+}
+
+type Methods struct {}
+
+type GeoCode struct {
+    Latitude  float64 `json:"latitude"`
+    Longitude float64 `json:"longitude"`
+}
+
+type Address struct {
+    CityName     string `json:"cityName"`
+    CityCode     string `json:"cityCode"`
+    CountryName  string `json:"countryName"`
+    CountryCode  string `json:"countryCode"`
+    RegionCode   string `json:"regionCode"`
 }

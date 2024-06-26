@@ -42,12 +42,14 @@ func (maker *PasetoMaker) VerifyToken(token string) (*Payload, error) {
 	payload := &Payload{}
 	err := maker.paseto.Decrypt(token, maker.symmetricKey, payload, nil)
 	if err != nil {
-		return nil, ErrInvalidToken
+		
+		return nil, fmt.Errorf("couldn't decrypt %v", ErrInvalidToken)
 	}
 
 	err = payload.Valid()
 	if err != nil {
-		return nil, err
+		fmt.Print("line 51, token.go %s", payload)
+		return nil, fmt.Errorf("payload not valid %v", err)
 	}
 
 	return payload, nil

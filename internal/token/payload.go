@@ -2,6 +2,7 @@ package token
 
 import (
 	"errors"
+	"fmt"
 	"time"
 
 	"github.com/golang-jwt/jwt/v5"
@@ -29,6 +30,7 @@ func (payload *Payload) GetSubject() (string, error) {
 }
 
 func NewPayload(userID int64, duration time.Duration) (*Payload, error) {//username string
+	fmt.Printf("line 38: duration %s\n", duration)
 	tokenID, err := uuid.NewRandom()
 	if err != nil {
 		return nil, err
