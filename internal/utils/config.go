@@ -15,8 +15,6 @@ type Config struct {
 	Wakanow             string        `mapstruct:"WAKANOW"`
 	TokenSymmetricKey   string        `mapstructure:"TOKEN_SYMMETRIC_KEY"`
 	AccessTokenDuration time.Duration `mapstructure:"ACCESS_TOKEN_DURATION"`
-	AmadeusClientID     string        `mapstructure:"AMADEUS_CLIENT_ID"`
-	AmadeusClientSecret string        `mapstructure:"AMADEUS_CLIENT_SECRET"`
 }
 
 func LoadConfig(path string) (config Config, err error) {
